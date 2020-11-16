@@ -24,7 +24,7 @@ public class PostService {
     }
 
     @Transactional
-    public void createPost(Post post){
+    public void savePost(Post post){
         postRepository.save(post);
     }
 
@@ -33,4 +33,5 @@ public class PostService {
         Post post = postRepository.findById(postId);
         postRepository.deleteById(post);
     }
+
 }

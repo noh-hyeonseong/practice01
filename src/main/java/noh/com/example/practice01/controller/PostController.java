@@ -5,11 +5,8 @@ import noh.com.example.practice01.domain.Post;
 import noh.com.example.practice01.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -43,7 +40,7 @@ public class PostController {
         post.setTitle(form.getTitle());
         post.setContent(form.getContent());
 
-        postService.createPost(post);
+        postService.savePost(post);
         return "redirect:/posts";
 
     }
@@ -52,6 +49,28 @@ public class PostController {
     public String deletePost(@PathVariable("postId") Long postId){
         log.info("@PostMapping /posts/"+postId+"/delete");
         postService.deletePost(postId);
+        return "redirect:/posts";
+    }
+
+    @GetMapping(value = "/posts/{postId}/edit")
+    public String editPostForm(@PathVariable("postId") Long postId, Model model){
+        log.info("@GetMapping /posts/"+postId+"/edit");
+        Post post = postService.findPost(postId);
+        PostForm form = new PostForm();
+        form.setId(post.getId());
+        form.setTitle(post.getTitle());
+        form.setContent(post.getContent());
+        model.addAttribute("form", form);
+        return "posts/editPostForm";
+    }
+    @PostMapping(value = "/posts/{postId}/edit")
+    public String editPost(@PathVariable("postId") Long postId, @ModelAttribute("form") PostForm form){
+        log.info("@PostMapping /posts/"+postId+"/edit");
+        Post post = postService.findPost(postId);
+        post.setId(postId);
+        post.setTitle(form.getTitle());
+        post.setContent(form.getContent());
+        postService.savePost(post);
         return "redirect:/posts";
     }
 }

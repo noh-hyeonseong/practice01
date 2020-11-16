@@ -12,6 +12,7 @@
                 <th>Title</th>
                 <th>Content</th>
                 <th>Delete</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>
@@ -20,10 +21,13 @@
                 <td th:text="${post.title}"></td>
                 <td th:text="${post.content}"></td>
                 <td>
-                    <form th:action="@{/posts/{postid}/delete (postid=${post.id}) }" method="post">
+                    <form th:action="@{/posts/{postId}/delete (postId=${post.id}) }" method="post">
                         <input type="hidden" name="_method" value="delete">
                         <button id="delete-btn">삭제</button>
                     </form>
+                </td>
+                <td>
+                    <a href="#" th:href="@{/posts/{postId}/edit (postId=${post.id})}" >수정</a>
                 </td>
             </tr>
             </tbody>
